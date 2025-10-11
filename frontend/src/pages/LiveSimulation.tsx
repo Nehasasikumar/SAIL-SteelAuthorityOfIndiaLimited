@@ -150,7 +150,7 @@ export default function LiveSimulation() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1 }}
           >
-            <Card className="p-5 shadow-elevated hover:shadow-xl transition-shadow border-l-4 border-l-primary">
+            <Card className="p-5 shadow-elevated hover:shadow-xl transition-shadow border-l-4 border-l-primary bg-transparent backdrop-blur-sm border-border/50">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary/10 rounded-lg">

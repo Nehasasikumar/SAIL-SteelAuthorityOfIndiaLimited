@@ -77,42 +77,72 @@ export default function Orders() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <MetricCard
-          title="Pending Orders"
-          value={18}
-          icon={Clock}
-          trend="Awaiting allocation"
-          color="warning"
-        />
-        <MetricCard
-          title="In Progress"
-          value={32}
-          icon={Package}
-          trend="Being loaded"
-          color="primary"
-        />
-        <MetricCard
-          title="Completed Today"
-          value={45}
-          icon={CheckCircle2}
-          trend="+12 from yesterday"
-          color="success"
-        />
-        <MetricCard
-          title="Total Orders"
-          value={95}
-          icon={ListOrdered}
-          trend="This week"
-          color="accent"
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <MetricCard
+            title="Pending Orders"
+            value={18}
+            icon={Clock}
+            trend="Awaiting allocation"
+            color="warning"
+          />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <MetricCard
+            title="In Progress"
+            value={32}
+            icon={Package}
+            trend="Being loaded"
+            color="primary"
+          />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <MetricCard
+            title="Completed Today"
+            value={45}
+            icon={CheckCircle2}
+            trend="+12 from yesterday"
+            color="success"
+          />
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <MetricCard
+            title="Total Orders"
+            value={95}
+            icon={ListOrdered}
+            trend="This week"
+            color="accent"
+          />
+        </motion.div>
       </div>
 
-      <Card className="p-6">
-        <h3 className="text-lg font-semibold mb-4">Recent Orders</h3>
-        <div className="text-center text-muted-foreground py-8">
-          Order management interface coming soon...
-        </div>
-      </Card>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+      >
+        <Card className="p-6 bg-transparent backdrop-blur-sm border-border/50">
+          <h3 className="text-lg font-semibold mb-4">Recent Orders</h3>
+          <div className="text-center text-muted-foreground py-8">
+            Order management interface coming soon...
+          </div>
+        </Card>
+      </motion.div>
     </div>
   );
 }

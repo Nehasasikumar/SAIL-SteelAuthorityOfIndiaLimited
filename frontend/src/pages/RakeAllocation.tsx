@@ -81,7 +81,7 @@ export default function RakeAllocation() {
       </div>
 
       {/* Input Section */}
-      <Card className="p-6 shadow-elevated">
+      <Card className="p-6 shadow-elevated bg-transparent backdrop-blur-sm border-border/50">
         <div className="space-y-4">
           <div>
             <label className="text-sm font-medium mb-2 block">Enter Rake ID</label>
@@ -123,7 +123,7 @@ export default function RakeAllocation() {
             exit={{ opacity: 0, y: -20 }}
             className="space-y-4"
           >
-            <Card className="p-6 shadow-elevated border-2 border-primary/20">
+            <Card className="p-6 shadow-elevated bg-transparent backdrop-blur-sm border-border/50 border-2 border-primary/20">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
                   <div className="p-3 bg-primary/10 rounded-xl">
@@ -220,14 +220,14 @@ export default function RakeAllocation() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                <Card className="p-6 shadow-elevated border-2 border-accent/20 bg-gradient-to-br from-accent/5 to-transparent">
+                <Card className="p-6 shadow-elevated bg-transparent backdrop-blur-sm border-border/50 border-2 border-accent/20">
                   <div className="flex items-center gap-2 mb-4">
                     <Sparkles className="h-5 w-5 text-accent" />
                     <h3 className="text-xl font-bold">AI Recommendations</h3>
                   </div>
 
                   <div className="space-y-4">
-                    <div className="flex items-start gap-3 p-4 bg-card rounded-lg border border-border">
+                    <div className="flex items-start gap-3 p-4 bg-transparent backdrop-blur-sm border border-border/50 rounded-lg">
                       <Package className="h-5 w-5 text-primary mt-0.5" />
                       <div className="flex-1">
                         <p className="font-medium">Material Loading</p>
@@ -237,7 +237,7 @@ export default function RakeAllocation() {
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3 p-4 bg-card rounded-lg border border-border">
+                    <div className="flex items-start gap-3 p-4 bg-transparent backdrop-blur-sm border border-border/50 rounded-lg">
                       <MapPin className="h-5 w-5 text-accent mt-0.5" />
                       <div className="flex-1">
                         <p className="font-medium">Destination</p>
@@ -247,7 +247,7 @@ export default function RakeAllocation() {
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3 p-4 bg-card rounded-lg border border-border">
+                    <div className="flex items-start gap-3 p-4 bg-transparent backdrop-blur-sm border border-border/50 rounded-lg">
                       <Clock className="h-5 w-5 text-green-500 mt-0.5" />
                       <div className="flex-1">
                         <p className="font-medium">Schedule</p>

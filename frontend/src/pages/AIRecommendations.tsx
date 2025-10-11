@@ -56,7 +56,7 @@ export default function AIRecommendations() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.15 }}
           >
-            <Card className="p-6 border-l-4 border-l-accent shadow-elevated hover:shadow-xl transition-all">
+            <Card className="p-6 border-l-4 border-l-accent shadow-elevated hover:shadow-xl transition-all bg-transparent backdrop-blur-sm border-border/50">
               <div className="flex items-start gap-4">
                 <div className={`p-3 rounded-xl bg-muted ${rec.color}`}>
                   <rec.icon className="h-6 w-6" />

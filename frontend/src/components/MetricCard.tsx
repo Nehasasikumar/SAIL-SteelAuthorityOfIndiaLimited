@@ -57,7 +57,7 @@ export default function MetricCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.5 }}
     >
-      <Card className="p-6 border-2 hover:shadow-elevated transition-all duration-300 bg-gradient-to-br from-card to-card/50">
+      <Card className="p-6 border-2 hover:shadow-elevated transition-all duration-300 bg-transparent backdrop-blur-sm border-border/50">
         <div className="flex items-start justify-between">
           <div className="flex-1">
             <p className="text-sm text-muted-foreground mb-2">{title}</p>
