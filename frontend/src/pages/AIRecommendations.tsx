@@ -37,12 +37,12 @@ const recommendations = [
 
 export default function AIRecommendations() {
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6 animate-fade-in-up" style={{ position: 'relative', zIndex: 1 }}>
       <div className="flex items-center gap-3">
         <Sparkles className="h-8 w-8 text-accent" />
         <div>
-          <h1 className="text-3xl font-bold">AI Recommendations</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold" style={{ color: 'black', textShadow: 'none', fontWeight: '900' }}>AI Recommendations</h1>
+          <p className="font-medium" style={{ color: 'black', textShadow: 'none', fontWeight: '600' }}>
             Smart suggestions powered by machine learning
           </p>
         </div>
