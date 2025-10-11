@@ -11,13 +11,21 @@ import {
   FileText,
   Settings,
   Bell,
+  BellOff,
   User,
+  UserCheck,
   Menu,
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import railwayBg from "@/assets/railway-bg.jpg";
 
@@ -34,6 +42,8 @@ const navItems = [
 
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [profileStatus, setProfileStatus] = useState(true); // true for online, false for offline
   const location = useLocation();
 
   return (
@@ -125,16 +135,42 @@ export default function Layout() {
 
             <div className="flex items-center gap-4">
               <ThemeToggle />
-              <Button variant="ghost" size="icon" className="relative text-foreground hover:text-primary hover:bg-primary/10">
-                <Bell className="h-5 w-5" />
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-accent text-accent-foreground">
-                  3
-                </Badge>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => setNotificationsEnabled(!notificationsEnabled)}
+                className="h-9 w-9 relative"
+              >
+                <Bell className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
+                <BellOff className={`absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all ${!notificationsEnabled ? 'rotate-0 scale-100' : ''}`} />
+                {notificationsEnabled && (
+                  <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-accent text-accent-foreground">
+                    3
+                  </Badge>
+                )}
+                <span className="sr-only">Toggle notifications</span>
               </Button>
-              <Button variant="ghost" className="gap-2 text-foreground hover:text-primary hover:bg-primary/10">
-                <User className="h-5 w-5" />
-                <span className="hidden md:inline">Admin</span>
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="gap-2">
+                    <User className="h-5 w-5" />
+                    <span className="hidden md:inline">Admin</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <span>Logout</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         </header>

@@ -84,7 +84,7 @@ export default function Dashboard() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <Card className="p-6 shadow-elevated">
+          <Card className="p-6 shadow-elevated bg-transparent backdrop-blur-sm border-border/50">
             <div className="flex items-center gap-2 mb-4">
               <Activity className="h-5 w-5 text-primary" />
               <h3 className="text-lg font-semibold">Rake Utilization Trend</h3>
@@ -120,7 +120,7 @@ export default function Dashboard() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <Card className="p-6 shadow-elevated">
+          <Card className="p-6 shadow-elevated bg-transparent backdrop-blur-sm border-border/50">
             <div className="flex items-center gap-2 mb-4">
               <BarChart3 className="h-5 w-5 text-accent" />
               <h3 className="text-lg font-semibold">Weekly Dispatch Volume</h3>
@@ -153,7 +153,7 @@ export default function Dashboard() {
           transition={{ delay: 0.6 }}
           className="lg:col-span-1"
         >
-          <Card className="p-6 shadow-elevated">
+          <Card className="p-6 shadow-elevated bg-transparent backdrop-blur-sm border-border/50">
             <h3 className="text-lg font-semibold mb-4">Order Priority Distribution</h3>
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
@@ -184,7 +184,7 @@ export default function Dashboard() {
           transition={{ delay: 0.7 }}
           className="lg:col-span-2"
         >
-          <Card className="p-6 shadow-elevated">
+          <Card className="p-6 shadow-elevated bg-transparent backdrop-blur-sm border-border/50">
             <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
             <div className="space-y-3">
               {[
