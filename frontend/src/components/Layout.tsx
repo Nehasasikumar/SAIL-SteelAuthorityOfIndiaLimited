@@ -9,8 +9,6 @@ import {
   Play,
   Bell,
   BellOff,
-  Menu,
-  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -36,15 +34,13 @@ const navItems = [
 ];
 
 export default function Layout() {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [profileStatus, setProfileStatus] = useState(true); // true for online, false for offline
   const location = useLocation();
 
 
 
   return (
-    <div className="min-h-screen bg-background flex w-full relative">
+    <div className="min-h-screen bg-background w-full relative">
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div
@@ -59,77 +55,52 @@ export default function Layout() {
         />
       </div>
 
-      {/* Sidebar */}
-      <motion.aside
-        initial={false}
-        animate={{ width: sidebarOpen ? 280 : 80 }}
-        className="relative border-r border-border bg-card shadow-elevated z-10"
-      >
-        <div className="h-full flex flex-col">
-          {/* Logo */}
-          <div className="h-16 border-b border-border flex items-center justify-between px-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex items-center gap-2"
-            >
-              <Train className="h-6 w-6 text-primary" />
-              {sidebarOpen && (
+      {/* Main Content */}
+      <div className="flex flex-col min-h-screen">
+        {/* Header */}
+        <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
+          <div className="h-16 px-6 flex items-center justify-between">
+            {/* Logo and Title */}
+            <div className="flex items-center gap-4">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="flex items-center gap-2"
+              >
+                <Train className="h-6 w-6 text-primary" />
                 <span className="font-bold text-lg text-black dark:text-white">
                   RAQ
                 </span>
-              )}
-            </motion.div>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="hover:bg-primary/10"
-            >
-              {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
-          </div>
+              </motion.div>
 
-          {/* Navigation */}
-          <nav className="flex-1 p-3 space-y-1">
-            {navItems.map((item) => {
-              const isActive = location.pathname === item.path;
-              const Icon = item.icon;
-              
-              return (
-                <Link key={item.path} to={item.path}>
-                  <motion.div
-                    whileHover={{ x: 4 }}
-                    className={cn(
-                      "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all",
-                      isActive
-                        ? "bg-primary text-primary-foreground shadow-md glow-steel"
-                        : "hover:bg-primary/10 text-foreground"
-                    )}
-                  >
-                    <Icon className="h-5 w-5 shrink-0" />
-                    {sidebarOpen && (
-                      <span className="font-medium text-sm">{item.label}</span>
-                    )}
-                  </motion.div>
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-      </motion.aside>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-screen">
-        {/* Header */}
-        <header className="h-16 border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
-          <div className="h-full px-6 flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-bold text-foreground">
-                Rake Allocation and Quality Control
-              </h1>
             </div>
 
+            {/* Top Navigation */}
+            <nav className="hidden md:flex items-center space-x-1">
+              {navItems.map((item) => {
+                const isActive = location.pathname === item.path;
+                const Icon = item.icon;
+
+                return (
+                  <Link key={item.path} to={item.path}>
+                    <motion.div
+                      whileHover={{ y: -2 }}
+                      className={cn(
+                        "flex items-center gap-2 px-3 py-2 rounded-lg transition-all",
+                        isActive
+                          ? "bg-primary text-primary-foreground shadow-md glow-steel"
+                          : "hover:bg-primary/10 text-foreground"
+                      )}
+                    >
+                      <Icon className="h-4 w-4" />
+                      <span className="font-medium text-sm">{item.label}</span>
+                    </motion.div>
+                  </Link>
+                );
+              })}
+            </nav>
+
+            {/* Right Side Controls */}
             <div className="flex items-center gap-4">
               <ThemeToggle />
 
