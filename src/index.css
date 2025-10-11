@@ -1,0 +1,202 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 220 25% 97%;
+    --foreground: 220 20% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 12%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 85%;
+    --secondary-foreground: 220 20% 12%;
+
+    --muted: 220 15% 92%;
+    --muted-foreground: 220 10% 45%;
+
+    --accent: 25 95% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 88%;
+    --input: 220 15% 88%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.75rem;
+
+    /* Railway theme colors */
+    --steel-blue: 217 91% 60%;
+    --steel-dark: 220 30% 25%;
+    --steel-light: 217 50% 85%;
+    --railway-orange: 25 95% 53%;
+    --charcoal: 220 20% 12%;
+    --silver: 220 10% 75%;
+    
+    /* Gradients */
+    --gradient-steel: linear-gradient(135deg, hsl(217 91% 60%) 0%, hsl(220 30% 25%) 100%);
+    --gradient-railway: linear-gradient(90deg, hsl(217 91% 60%) 0%, hsl(25 95% 53%) 100%);
+    --gradient-glow: radial-gradient(circle at center, hsl(217 91% 60% / 0.15) 0%, transparent 70%);
+    
+    /* Effects */
+    --glow-steel: 0 0 20px hsl(217 91% 60% / 0.3);
+    --glow-orange: 0 0 20px hsl(25 95% 53% / 0.3);
+    --shadow-elevated: 0 10px 40px -10px hsl(220 20% 12% / 0.1);
+    
+    --sidebar-background: 220 25% 97%;
+    --sidebar-foreground: 220 20% 12%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 15% 92%;
+    --sidebar-accent-foreground: 220 20% 12%;
+    --sidebar-border: 220 15% 88%;
+    --sidebar-ring: 217 91% 60%;
+  }
+
+  .dark {
+    --background: 220 25% 8%;
+    --foreground: 220 15% 95%;
+
+    --card: 220 20% 12%;
+    --card-foreground: 220 15% 95%;
+
+    --popover: 220 20% 12%;
+    --popover-foreground: 220 15% 95%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 20% 18%;
+    --secondary-foreground: 220 15% 95%;
+
+    --muted: 220 20% 16%;
+    --muted-foreground: 220 10% 60%;
+
+    --accent: 25 95% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 20% 20%;
+    --input: 220 20% 20%;
+    --ring: 217 91% 60%;
+
+    /* Railway theme dark mode */
+    --gradient-steel: linear-gradient(135deg, hsl(217 91% 50%) 0%, hsl(220 30% 15%) 100%);
+    --gradient-railway: linear-gradient(90deg, hsl(217 91% 50%) 0%, hsl(25 95% 53%) 100%);
+    --gradient-glow: radial-gradient(circle at center, hsl(217 91% 60% / 0.2) 0%, transparent 70%);
+    
+    --glow-steel: 0 0 30px hsl(217 91% 60% / 0.4);
+    --glow-orange: 0 0 30px hsl(25 95% 53% / 0.4);
+    --shadow-elevated: 0 20px 50px -10px hsl(0 0% 0% / 0.5);
+    
+    --sidebar-background: 220 25% 10%;
+    --sidebar-foreground: 220 15% 90%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 20% 16%;
+    --sidebar-accent-foreground: 220 15% 90%;
+    --sidebar-border: 220 20% 18%;
+    --sidebar-ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer utilities {
+  .glow-steel {
+    box-shadow: var(--glow-steel);
+  }
+  
+  .glow-orange {
+    box-shadow: var(--glow-orange);
+  }
+  
+  .gradient-steel {
+    background: var(--gradient-steel);
+  }
+  
+  .gradient-railway {
+    background: var(--gradient-railway);
+  }
+  
+  .shadow-elevated {
+    box-shadow: var(--shadow-elevated);
+  }
+  
+  .animate-slide-in-left {
+    animation: slide-in-left 0.5s ease-out;
+  }
+  
+  .animate-slide-in-right {
+    animation: slide-in-right 0.5s ease-out;
+  }
+  
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes slide-in-left {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
