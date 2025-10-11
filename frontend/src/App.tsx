@@ -10,7 +10,7 @@ import RakeAllocation from "./pages/RakeAllocation";
 import LiveSimulation from "./pages/LiveSimulation";
 import Orders from "./pages/Orders";
 import AIRecommendations from "./pages/AIRecommendations";
-import Settings from "./pages/Settings";
+
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,10 +28,10 @@ const App = () => (
             <Route path="allocation" element={<RakeAllocation />} />
             <Route path="simulation" element={<LiveSimulation />} />
             <Route path="orders" element={<Orders />} />
-            <Route path="inventory" element={<Dashboard />} />
+
             <Route path="ai" element={<AIRecommendations />} />
-            <Route path="reports" element={<Dashboard />} />
-            <Route path="settings" element={<Settings />} />
+
+
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

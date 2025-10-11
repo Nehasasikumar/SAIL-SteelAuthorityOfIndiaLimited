@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Train, TrendingUp, Clock, Fuel, BarChart3, Activity } from "lucide-react";
+import { Train, TrendingUp, Clock, Fuel, BarChart3, Activity, Download } from "lucide-react";
 import MetricCard from "@/components/MetricCard";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 const utilizationData = [
@@ -30,14 +31,54 @@ const priorityData = [
 ];
 
 export default function Dashboard() {
+  const handleDownload = () => {
+    const dashboardData = {
+      metrics: {
+        activeRakes: 24,
+        avgUtilization: "87%",
+        dailyDispatch: 2847,
+        etaAccuracy: "94%"
+      },
+      utilizationTrend: utilizationData,
+      dispatchVolume: dispatchData,
+      priorityDistribution: priorityData,
+      recentActivity: [
+        { rake: "R1234", status: "Departed", time: "10:45 AM", destination: "CMO Kolkata" },
+        { rake: "R5678", status: "Loading", time: "11:20 AM", destination: "Customer A123" },
+        { rake: "R9012", status: "Arrived", time: "12:05 PM", destination: "CMO Mumbai" },
+        { rake: "R3456", status: "In Transit", time: "12:30 PM", destination: "Customer B456" },
+      ],
+      generatedAt: new Date().toISOString(),
+      reportType: "Dashboard Overview"
+    };
+
+    const fileName = `dashboard_data_${new Date().toISOString().split('T')[0]}.json`;
+    const blob = new Blob([JSON.stringify(dashboardData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-6 animate-fade-in-up">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold mb-2">Dashboard Overview</h1>
-        <p className="text-muted-foreground">
-          Real-time rake operations from Bokaro Steel Plant
-        </p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Dashboard Overview</h1>
+          <p className="text-muted-foreground">
+            Real-time rake operations from Bokaro Steel Plant
+          </p>
+        </div>
+        <Button onClick={handleDownload} variant="outline" className="gap-2">
+          <Download className="h-4 w-4" />
+          Download Data
+        </Button>
       </div>
 
       {/* Metrics Grid */}

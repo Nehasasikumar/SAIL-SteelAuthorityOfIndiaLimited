@@ -47,7 +47,7 @@ export default function LiveSimulation() {
       </div>
 
       {/* Map Visualization */}
-      <Card className="p-8 shadow-elevated bg-gradient-to-br from-card to-muted/20 min-h-[400px] relative overflow-hidden">
+      <Card className="p-8 shadow-elevated bg-transparent backdrop-blur-sm border-border/50 min-h-[400px] relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <svg className="w-full h-full" viewBox="0 0 800 400">
             {/* Railway tracks */}

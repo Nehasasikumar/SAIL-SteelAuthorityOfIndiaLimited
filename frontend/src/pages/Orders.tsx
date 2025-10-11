@@ -1,15 +1,79 @@
 import { motion } from "framer-motion";
-import { ListOrdered, Package, Clock, CheckCircle2 } from "lucide-react";
+import { ListOrdered, Package, Clock, CheckCircle2, Download } from "lucide-react";
 import MetricCard from "@/components/MetricCard";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export default function Orders() {
+  const handleDownload = () => {
+    const ordersData = {
+      summary: {
+        pendingOrders: 18,
+        inProgressOrders: 32,
+        completedToday: 45,
+        totalOrders: 95
+      },
+      orders: [
+        {
+          id: "ORD-001",
+          customer: "Steel Corp Ltd",
+          material: "Iron Ore",
+          quantity: 5000,
+          status: "pending",
+          priority: "high",
+          createdDate: "2025-01-15",
+          expectedDelivery: "2025-01-20"
+        },
+        {
+          id: "ORD-002",
+          customer: "Cement Industries",
+          material: "Coal",
+          quantity: 3000,
+          status: "in_progress",
+          priority: "medium",
+          createdDate: "2025-01-14",
+          expectedDelivery: "2025-01-19"
+        },
+        {
+          id: "ORD-003",
+          customer: "Power Plant Ltd",
+          material: "Coal",
+          quantity: 8000,
+          status: "completed",
+          priority: "high",
+          createdDate: "2025-01-13",
+          expectedDelivery: "2025-01-18"
+        }
+      ],
+      generatedAt: new Date().toISOString(),
+      reportType: "Order Management"
+    };
+
+    const fileName = `orders_data_${new Date().toISOString().split('T')[0]}.json`;
+    const blob = new Blob([JSON.stringify(ordersData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-6 animate-fade-in-up">
-      <div>
-        <h1 className="text-3xl font-bold mb-2">Order Management</h1>
-        <p className="text-muted-foreground">Track and manage customer orders</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Order Management</h1>
+          <p className="text-muted-foreground">Track and manage customer orders</p>
+        </div>
+        <Button onClick={handleDownload} variant="outline" className="gap-2">
+          <Download className="h-4 w-4" />
+          Download Data
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
