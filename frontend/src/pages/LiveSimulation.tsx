@@ -101,12 +101,12 @@ export default function LiveSimulation() {
   }, [messages]);
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
+    <div className="space-y-6 animate-fade-in-up" style={{ position: 'relative', zIndex: 1 }}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Live Simulation</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold mb-2" style={{ color: 'black', textShadow: 'none', fontWeight: '900' }}>Live Simulation</h1>
+          <p className="font-medium" style={{ color: 'black', textShadow: 'none', fontWeight: '600' }}>
             Real-time visualization of rake movements
           </p>
         </div>

@@ -71,11 +71,11 @@ export default function RakeAllocation() {
   };
 
   return (
-    <div className="space-y-6 animate-fade-in-up max-w-5xl">
+    <div className="space-y-6 animate-fade-in-up max-w-5xl" style={{ position: 'relative', zIndex: 1 }}>
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold mb-2">Rake Allocation</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-3xl font-bold mb-2" style={{ color: 'black', textShadow: 'none', fontWeight: '900' }}>Rake Allocation</h1>
+        <p className="font-medium" style={{ color: 'black', textShadow: 'none', fontWeight: '600' }}>
           AI-powered rake optimization for maximum efficiency
         </p>
       </div>

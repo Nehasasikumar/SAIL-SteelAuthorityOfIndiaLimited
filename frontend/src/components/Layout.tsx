@@ -44,10 +44,10 @@ export default function Layout() {
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-20"
+          className="absolute inset-0 bg-cover bg-center opacity-10"
           style={{ backgroundImage: `url(${railwayBg})` }}
         />
-        <div className="absolute inset-0 bg-gradient-radial from-primary/10 via-transparent to-background" />
+        <div className="absolute inset-0 bg-gradient-radial from-primary/5 via-transparent to-background" />
         <motion.div
           className="absolute top-0 left-0 w-full h-1 bg-gradient-railway"
           animate={{ x: ["-100%", "100%"] }}
@@ -58,7 +58,7 @@ export default function Layout() {
       {/* Main Content */}
       <div className="flex flex-col min-h-screen">
         {/* Header */}
-        <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-10">
+        <header className="border-b border-border bg-card/80 backdrop-blur-sm sticky top-0 z-10" style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)' }}>
           <div className="h-16 px-6 flex items-center justify-between">
             {/* Logo and Title */}
             <div className="flex items-center gap-4">
@@ -89,8 +89,11 @@ export default function Layout() {
                         "flex items-center gap-2 px-3 py-2 rounded-lg transition-all",
                         isActive
                           ? "bg-primary text-primary-foreground shadow-md glow-steel"
-                          : "hover:bg-primary/10 text-foreground"
+                          : "hover:bg-primary/10 font-semibold"
                       )}
+                      style={{
+                        color: isActive ? undefined : 'black'
+                      }}
                     >
                       <Icon className="h-4 w-4" />
                       <span className="font-medium text-sm">{item.label}</span>
