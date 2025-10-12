@@ -10,7 +10,10 @@ import RakeAllocation from "./pages/RakeAllocation";
 import LiveSimulation from "./pages/LiveSimulation";
 import Orders from "./pages/Orders";
 import AIRecommendations from "./pages/AIRecommendations";
-
+import Inventory from "./pages/Inventory";
+import LoadingPoints from "./pages/LoadingPoints";
+import Production from "./pages/Production";
+import CostOptimization from "./pages/CostOptimization";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,10 +31,11 @@ const App = () => (
             <Route path="allocation" element={<RakeAllocation />} />
             <Route path="simulation" element={<LiveSimulation />} />
             <Route path="orders" element={<Orders />} />
-
+            <Route path="inventory" element={<Inventory />} />
+            <Route path="loading-points" element={<LoadingPoints />} />
             <Route path="ai" element={<AIRecommendations />} />
-
-
+            <Route path="production" element={<Production />} />
+            <Route path="cost-optimization" element={<CostOptimization />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

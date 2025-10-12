@@ -65,11 +65,7 @@ export default function Orders() {
 
   return (
     <div className="space-y-6 animate-fade-in-up" style={{ position: 'relative', zIndex: 1 }}>
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold mb-2 text-foreground">Order Management</h1>
-          <p className="font-medium text-muted-foreground">Track and manage customer orders</p>
-        </div>
+      <div className="flex justify-end items-start">
         <Button onClick={handleDownload} variant="outline" className="gap-2">
           <Download className="h-4 w-4" />
           Download Data

@@ -40,12 +40,6 @@ export default function AIRecommendations() {
     <div className="space-y-6 animate-fade-in-up" style={{ position: 'relative', zIndex: 1 }}>
       <div className="flex items-center gap-3">
         <Sparkles className="h-8 w-8 text-accent" />
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">AI Recommendations</h1>
-          <p className="font-medium text-muted-foreground">
-            Smart suggestions powered by machine learning
-          </p>
-        </div>
       </div>
 
       <div className="space-y-4">

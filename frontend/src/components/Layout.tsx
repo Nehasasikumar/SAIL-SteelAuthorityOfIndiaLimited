@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -9,6 +9,10 @@ import {
   Play,
   Bell,
   BellOff,
+  Package,
+  MapPin,
+  TrendingUp,
+  BarChart3,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -20,115 +24,154 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import railwayBg from "@/assets/railway-bg.jpg";
+// Steel plant themed background with subtle styling - no harsh shadows
+const steelPlantBg = `linear-gradient(135deg,
+  hsl(var(--background)) 0%,
+  hsl(var(--muted)/0.02) 25%,
+  hsl(var(--background)) 50%,
+  hsl(var(--muted)/0.02) 75%,
+  hsl(var(--background)) 100%
+)`;
 
 const navItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/" },
   { icon: Train, label: "Rake Allocation", path: "/allocation" },
   { icon: ListOrdered, label: "Order Management", path: "/orders" },
-
+  { icon: Package, label: "Inventory Management", path: "/inventory" },
+  { icon: MapPin, label: "Loading Points", path: "/loading-points" },
   { icon: Sparkles, label: "AI Recommendations", path: "/ai" },
+  { icon: TrendingUp, label: "Production Planning", path: "/production" },
   { icon: Play, label: "Live Simulation", path: "/simulation" },
-
-
+  { icon: BarChart3, label: "Cost Optimization", path: "/cost-optimization" },
 ];
 
 export default function Layout() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const location = useLocation();
 
-
-
   return (
-    <div className="min-h-screen bg-background w-full relative">
-      {/* Animated Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-10"
-          style={{ backgroundImage: `url(${railwayBg})` }}
-        />
-        <div className="absolute inset-0 bg-gradient-radial from-primary/5 via-transparent to-background" />
-        <motion.div
-          className="absolute top-0 left-0 w-full h-1 bg-gradient-railway"
-          animate={{ x: ["-100%", "100%"] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-        />
+    <div className="min-h-screen bg-background w-full flex">
+      {/* Clean Background - No shadows */}
+      <div className="fixed inset-0 pointer-events-none bg-background">
       </div>
 
-      {/* Main Content */}
-      <div className="flex flex-col min-h-screen">
-        {/* Header */}
-        <header className="border-b border-border bg-card/80 backdrop-blur-sm sticky top-0 z-10">
-          <div className="h-16 px-6 flex items-center justify-between">
-            {/* Logo and Title */}
-            <div className="flex items-center gap-4">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="flex items-center gap-2"
-              >
+      {/* Collapsible Sidebar */}
+      <aside className={cn(
+        "bg-background/95 backdrop-blur-sm border-r border-border/20 transition-all duration-300 flex flex-col shadow-sm flex-shrink-0",
+        sidebarCollapsed ? "w-20" : "w-80"
+      )}>
+        {/* Sidebar Header */}
+        <div className="p-4 border-b border-border">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-xl">
                 <Train className="h-6 w-6 text-primary" />
+              </div>
+              {!sidebarCollapsed && (
                 <span className="font-bold text-lg text-foreground">
-                  RAQ
+                  SAIL
                 </span>
-              </motion.div>
-
+              )}
             </div>
-
-            {/* Top Navigation */}
-            <nav className="hidden md:flex items-center space-x-1">
-              {navItems.map((item) => {
-                const isActive = location.pathname === item.path;
-                const Icon = item.icon;
-
-                return (
-                  <Link key={item.path} to={item.path}>
-                    <motion.div
-                      whileHover={{ y: -2 }}
-                      className={cn(
-                        "flex items-center gap-2 px-3 py-2 rounded-lg transition-all",
-                        isActive
-                          ? "bg-primary text-primary-foreground shadow-md glow-steel"
-                          : "hover:bg-primary/10 font-semibold text-foreground"
-                      )}
-                    >
-                      <Icon className="h-4 w-4" />
-                      <span className="font-medium text-sm">{item.label}</span>
-                    </motion.div>
-                  </Link>
-                );
-              })}
-            </nav>
-
-            {/* Right Side Controls */}
-            <div className="flex items-center gap-4">
-              <ThemeToggle />
-
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => setNotificationsEnabled(!notificationsEnabled)}
-                className="h-9 w-9 relative"
+            <button
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded-md hover:bg-accent/10"
+              title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            >
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <Bell className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all" />
-                <BellOff className={`absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all ${!notificationsEnabled ? 'rotate-0 scale-100' : ''}`} />
-                {notificationsEnabled && (
-                  <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 bg-accent text-accent-foreground">
-                    3
-                  </Badge>
+                {sidebarCollapsed ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
                 )}
-                <span className="sr-only">Toggle notifications</span>
-              </Button>
+              </svg>
+            </button>
+          </div>
+        </div>
 
+        {/* Navigation Items */}
+        <nav className="flex-1 p-4">
+          <div className="space-y-2">
+            {navItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              const Icon = item.icon;
+
+              return (
+                <Link key={item.path} to={item.path}>
+                  <div className={cn(
+                    "flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer",
+                    isActive
+                      ? "bg-primary text-primary-foreground"
+                      : "hover:bg-primary/10 text-foreground hover:text-primary"
+                  )}>
+                    <Icon className="h-5 w-5 flex-shrink-0" />
+                    {!sidebarCollapsed && (
+                      <span className="font-medium text-sm">{item.label}</span>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </nav>
+
+        {/* Sidebar Footer - Clean */}
+        <div className="p-4 border-t border-border">
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 flex flex-col min-h-screen" style={{ maxWidth: 'calc(100vw - 20rem)' }}>
+        {/* Page Header - Matching Sidebar Header Style */}
+        <header className="px-8 bg-background/95 backdrop-blur-sm border-b border-border flex items-center justify-between" style={{ height: '81px', width: sidebarCollapsed ? 'calc(100vw - 5rem)' : 'calc(100vw - 20rem)' }}>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-xl">
+                {navItems.find(item => item.path === location.pathname)?.icon ?
+                  React.createElement(navItems.find(item => item.path === location.pathname)?.icon || LayoutDashboard, {
+                    className: "h-6 w-6 text-primary"
+                  }) :
+                  <LayoutDashboard className="h-6 w-6 text-primary" />
+                }
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-foreground">
+                  {navItems.find(item => item.path === location.pathname)?.label || 'Dashboard'}
+                </h1>
+              </div>
             </div>
+          </div>
+
+          {/* Top Right Controls */}
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setNotificationsEnabled(!notificationsEnabled)}
+              className="h-10 w-10 relative hover:bg-accent/10"
+            >
+              <Bell className="h-[1.2rem] w-[1.2rem]" />
+              {notificationsEnabled && (
+                <Badge className="absolute -top-1 -right-1 h-6 w-6 flex items-center justify-center p-0 bg-accent text-accent-foreground text-xs">
+                  3
+                </Badge>
+              )}
+            </Button>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 p-6">
+        <div className="flex-1 p-6 overflow-auto">
           <Outlet />
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

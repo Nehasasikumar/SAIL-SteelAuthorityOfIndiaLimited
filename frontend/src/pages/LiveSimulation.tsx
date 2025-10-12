@@ -24,6 +24,8 @@ const fallbackRoutes = [
     to: "CMO Kolkata",
     progress: 45,
     status: "In Transit",
+    departureTime: "08:30 AM",
+    eta: "14:45 PM",
   },
   {
     id: "R5678",
@@ -31,6 +33,8 @@ const fallbackRoutes = [
     to: "Customer A123",
     progress: 78,
     status: "In Transit",
+    departureTime: "09:15 AM",
+    eta: "15:30 PM",
   },
   {
     id: "R9012",
@@ -38,6 +42,8 @@ const fallbackRoutes = [
     to: "CMO Mumbai",
     progress: 92,
     status: "Arriving",
+    departureTime: "07:45 AM",
+    eta: "16:00 PM",
   },
   {
     id: "R3456",
@@ -45,6 +51,8 @@ const fallbackRoutes = [
     to: "Customer B456",
     progress: 15,
     status: "Departed",
+    departureTime: "10:00 AM",
+    eta: "17:15 PM",
   },
 ];
 
@@ -102,14 +110,8 @@ export default function LiveSimulation() {
 
   return (
     <div className="space-y-6 animate-fade-in-up" style={{ position: 'relative', zIndex: 1 }}>
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold mb-2 text-foreground">Live Simulation</h1>
-          <p className="font-medium text-muted-foreground">
-            Real-time visualization of rake movements
-          </p>
-        </div>
+      {/* Controls */}
+      <div className="flex items-center justify-end">
 
         {error && (
           <Alert variant="destructive" className="mb-4">

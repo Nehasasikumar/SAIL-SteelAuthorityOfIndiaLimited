@@ -67,14 +67,8 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6 animate-fade-in-up" style={{ position: 'relative', zIndex: 1 }}>
-      {/* Header */}
-      <div className="flex justify-between items-start">
-        <div>
-          <h1 className="text-3xl font-bold mb-2 text-foreground">Dashboard Overview</h1>
-          <p className="font-medium text-muted-foreground">
-            Real-time rake operations from Bokaro Steel Plant
-          </p>
-        </div>
+      {/* Controls */}
+      <div className="flex justify-end items-start">
         <Button onClick={handleDownload} variant="outline" className="gap-2">
           <Download className="h-4 w-4" />
           Download Data
@@ -82,7 +76,7 @@ export default function Dashboard() {
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-fr">
         <MetricCard
           title="Active Rakes"
           value={24}
