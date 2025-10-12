@@ -70,8 +70,8 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold mb-2" style={{ color: 'black', textShadow: 'none', fontWeight: '900' }}>Dashboard Overview</h1>
-          <p className="font-medium" style={{ color: 'black', textShadow: 'none', fontWeight: '600' }}>
+          <h1 className="text-3xl font-bold mb-2 text-foreground">Dashboard Overview</h1>
+          <p className="font-medium text-muted-foreground">
             Real-time rake operations from Bokaro Steel Plant
           </p>
         </div>

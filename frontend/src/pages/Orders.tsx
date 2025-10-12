@@ -67,8 +67,8 @@ export default function Orders() {
     <div className="space-y-6 animate-fade-in-up" style={{ position: 'relative', zIndex: 1 }}>
       <div className="flex justify-between items-start">
         <div>
-          <h1 className="text-3xl font-bold mb-2" style={{ color: 'black', textShadow: 'none', fontWeight: '900' }}>Order Management</h1>
-          <p className="font-medium" style={{ color: 'black', textShadow: 'none', fontWeight: '600' }}>Track and manage customer orders</p>
+          <h1 className="text-3xl font-bold mb-2 text-foreground">Order Management</h1>
+          <p className="font-medium text-muted-foreground">Track and manage customer orders</p>
         </div>
         <Button onClick={handleDownload} variant="outline" className="gap-2">
           <Download className="h-4 w-4" />

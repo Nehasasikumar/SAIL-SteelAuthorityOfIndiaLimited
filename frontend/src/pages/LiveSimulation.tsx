@@ -105,8 +105,8 @@ export default function LiveSimulation() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold mb-2" style={{ color: 'black', textShadow: 'none', fontWeight: '900' }}>Live Simulation</h1>
-          <p className="font-medium" style={{ color: 'black', textShadow: 'none', fontWeight: '600' }}>
+          <h1 className="text-3xl font-bold mb-2 text-foreground">Live Simulation</h1>
+          <p className="font-medium text-muted-foreground">
             Real-time visualization of rake movements
           </p>
         </div>

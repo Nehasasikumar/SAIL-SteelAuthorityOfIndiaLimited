@@ -41,8 +41,8 @@ export default function AIRecommendations() {
       <div className="flex items-center gap-3">
         <Sparkles className="h-8 w-8 text-accent" />
         <div>
-          <h1 className="text-3xl font-bold" style={{ color: 'black', textShadow: 'none', fontWeight: '900' }}>AI Recommendations</h1>
-          <p className="font-medium" style={{ color: 'black', textShadow: 'none', fontWeight: '600' }}>
+          <h1 className="text-3xl font-bold text-foreground">AI Recommendations</h1>
+          <p className="font-medium text-muted-foreground">
             Smart suggestions powered by machine learning
           </p>
         </div>
