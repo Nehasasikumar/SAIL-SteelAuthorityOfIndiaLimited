@@ -288,14 +288,25 @@ simulation_manager = SimulationConnectionManager()
 # WebSocket endpoint for live simulation
 @app.websocket("/ws/simulation")
 async def simulation_ws(websocket: WebSocket):
-    await simulation_manager.connect(websocket)
+    client = f"{websocket.client.host}:{websocket.client.port}" if hasattr(websocket, 'client') and websocket.client else "unknown"
+    logging.info(f"WS connection attempt from {client}")
+    try:
+        await simulation_manager.connect(websocket)
+        logging.info(f"WS connection accepted for {client}")
+    except Exception as connection_err:
+        logging.error(f"Error accepting WS connection: {connection_err}")
+        raise
+        
     try:
         while True:
+            logging.debug(f"Waiting for message from {client}")
             data = await websocket.receive_text()
+            logging.info(f"Received WS message from {client}: {data[:100]}...")
             try:
                 # Parse client message
                 message = json.loads(data)
                 action = message.get("action")
+                logging.debug(f"Parsed action: {action}")
                 
                 if action == "start_simulation":
                     await simulation_manager.start_simulation()
@@ -304,14 +315,17 @@ async def simulation_ws(websocket: WebSocket):
                 elif action == "set_speed":
                     speed = message.get("speed", 1)
                     await simulation_manager.set_speed(speed)
-            except json.JSONDecodeError:
+            except json.JSONDecodeError as json_err:
+                logging.error(f"JSON decode error from {client}: {json_err}")
                 await websocket.send_json({
                     "type": "simulation_error",
                     "message": "Invalid JSON message"
                 })
     except Exception as e:
+        logging.exception(f"WebSocket error with {client}: {e}")
         print(f"WebSocket error: {e}")
     finally:
+        logging.info(f"WS connection closed for {client}")
         simulation_manager.disconnect(websocket)
 
 if __name__ == "__main__":

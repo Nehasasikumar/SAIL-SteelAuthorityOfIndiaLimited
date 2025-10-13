@@ -6,6 +6,49 @@ The first implementation focuses on **movements from Bokaro Steel Plant (BSP)** 
 
 ---
 
+## 🔍 Detailed Problem Statement
+
+### Context
+In large-scale logistics operations (e.g., mining, steel, cement, or ports), rake formation is a critical function. A rake is a full train-load of wagons used to transport bulk materials like coal, iron ore, limestone, or finished goods from stockyards/warehouses to consumption centers or customer destinations.
+
+Currently, rake formation in Steel Plants is often based on manual coordination between:
+- Material availability at Plants
+- Pending customer orders and their delivery priorities
+- Availability of empty rakes/wagons
+- Loading point capability and utilization
+- Operational constraints like siding capacity, route restrictions
+
+This manual or rule-based approach results in:
+- Delayed rake formation, leading to missed delivery deadlines
+- Underutilized rakes or partial load shipments
+- Increased freight and demurrage costs
+- Sub-optimal allocation of materials to rakes across multiple stockyards
+
+### Objective
+Develop an AI/ML-based decision support system that:
+- Dynamically forms optimal rake plans by evaluating material availability, order position, order priority, loading point availability and rake/wagon availability
+- Ensures that rakes are fully and efficiently loaded from the most cost-effective stockyards/destination
+- Minimizes total logistics cost, including loading, transport and penalty/delay costs, idle freight
+
+### Problem Scope
+The system has to:
+- Match material availability across stockyards with open customer orders
+- Assign available rakes/wagons to the most suitable loading points
+- Optimize the composition of each rake based on cost, availability, and destination constraints
+- Respect operational constraints such as minimum rakesize, loading point capacity, and siding availability
+- Output daily rake formation and dispatch plan with cost and resource efficiency
+- Maintain product vs wagon type matrix
+- Suggest production based on rail/road order and rail/road loading capabilities as well as inventory at warehouses
+
+### Key Decisions to Optimize
+- For which stockyard(s)/destination should materials be sourced for a rake?
+- Which orders or destinations should be clubbed together in a rake (multi-destination allowed or not)?
+- Which rake(s)/wagons should be assigned to which route/load point?
+- How to sequence rake formation and dispatch to meet SLAs and minimize cost?
+- Optimize both rail and road order fulfillment
+
+---
+
 ## ⚙️ Problem Context
 In large steel logistics, **rake formation** involves grouping wagons and assigning materials from plants or stockyards to customer destinations.  
 Currently, this process is **manual**, leading to:
@@ -62,57 +105,88 @@ Database (PostgreSQL / MongoDB)
 ## 🗂️ Folder Structure
 
 ```
-rake-optimization-system/
+SAIL-SteelAuthorityOfIndiaLimited/
 │
 ├── backend/
 │   ├── app/
 │   │   ├── main.py
+│   │   ├── core/
+│   │   │   ├── config.py
+│   │   │   └── database.py
 │   │   ├── models/
-│   │   │   ├── rake_model.py
-│   │   │   └── data_schema.py
+│   │   │   ├── inventory.py
+│   │   │   ├── optimization.py
+│   │   │   ├── order.py
+│   │   │   └── rake.py
 │   │   ├── routes/
-│   │   │   ├── rake_routes.py
-│   │   │   ├── stockyard_routes.py
-│   │   │   ├── order_routes.py
-│   │   │   └── ml_routes.py
+│   │   │   ├── ai_recommendations.py
+│   │   │   ├── dashboard.py
+│   │   │   ├── inventory.py
+│   │   │   ├── live_simulation.py
+│   │   │   ├── order_management.py
+│   │   │   ├── rake_allocation.py
+│   │   │   └── reports.py
+│   │   ├── schemas/
+│   │   │   ├── inventory_schema.py
+│   │   │   ├── optimize_schema.py
+│   │   │   ├── order_schema.py
+│   │   │   ├── rake_schema.py
+│   │   │   └── report_schema.py
 │   │   ├── services/
-│   │   │   ├── optimization_engine.py
-│   │   │   ├── data_cleaning.py
-│   │   │   └── prediction.py
-│   │   ├── database/
-│   │   │   └── connection.py
+│   │   │   ├── ai_service.py
+│   │   │   ├── dashboard_service.py
+│   │   │   ├── inventory_service.py
+│   │   │   ├── optimize_service.py
+│   │   │   ├── order_service.py
+│   │   │   ├── rake_service.py
+│   │   │   ├── report_service.py
+│   │   │   └── simulation_service.py
+│   │   ├── ml/
+│   │   │   ├── cost_model.py
+│   │   │   ├── eta_predictor.py
+│   │   │   ├── rake_optimizer.py
+│   │   │   └── models/
 │   │   └── utils/
-│   │       └── helpers.py
+│   │       ├── helpers.py
+│   │       └── logger.py
 │   ├── requirements.txt
 │   └── README.md
 │
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── DataUpload.jsx
-│   │   │   ├── RakePlan.jsx
-│   │   │   ├── Analytics.jsx
-│   │   │   └── Footer.jsx
+│   │   │   ├── Layout.tsx
+│   │   │   ├── MetricCard.tsx
+│   │   │   ├── ThemeToggle.tsx
+│   │   │   └── ui/
 │   │   ├── pages/
-│   │   │   ├── Home.jsx
-│   │   │   ├── RakeOptimizer.jsx
-│   │   │   ├── Stockyard.jsx
-│   │   │   └── Reports.jsx
-│   │   ├── App.jsx
-│   │   └── main.jsx
+│   │   │   ├── AIRecommendations.tsx
+│   │   │   ├── CostOptimization.tsx
+│   │   │   ├── Dashboard.tsx
+│   │   │   ├── Index.tsx
+│   │   │   ├── Inventory.tsx
+│   │   │   ├── LiveSimulation.tsx
+│   │   │   ├── LoadingPoints.tsx
+│   │   │   ├── NotFound.tsx
+│   │   │   ├── Orders.tsx
+│   │   │   ├── Production.tsx
+│   │   │   └── RakeAllocation.tsx
+│   │   ├── hooks/
+│   │   │   ├── use-mobile.tsx
+│   │   │   ├── use-toast.ts
+│   │   │   └── useWebSocket.ts
+│   │   ├── lib/
+│   │   │   ├── api.ts
+│   │   │   └── utils.ts
+│   │   ├── App.tsx
+│   │   └── main.tsx
 │   ├── package.json
-│   └── vite.config.js
-│
-├── ml/
-│   ├── data/
-│   ├── notebooks/
-│   ├── model_training.ipynb
-│   └── rake_optimizer.pkl
+│   ├── vite.config.ts
+│   ├── .env
+│   └── tsconfig.json
 │
 ├── README.md
-└── .env
+└── start_dev.bat
 ```
 
 ---
@@ -121,21 +195,25 @@ rake-optimization-system/
 
 ### 🔹 Tech Stack
 - **FastAPI** – API framework  
-- **PostgreSQL** – Data persistence  
+- **SQLite/PostgreSQL** – Data persistence  
 - **SQLAlchemy** – ORM  
 - **Scikit-learn / PyTorch** – ML model integration  
 - **Pandas, Numpy** – Data handling  
+- **WebSockets** - Real-time simulation and updates
 
 ### 🔹 API Endpoints
 
 | Endpoint | Method | Description |
 |-----------|--------|-------------|
-| `/api/materials/upload` | POST | Upload plant material data |
-| `/api/orders/upload` | POST | Upload customer order data |
-| `/api/rakes/upload` | POST | Upload rake/wagon availability |
-| `/api/optimize` | POST | Trigger AI optimization and get best rake plan |
-| `/api/rakes/plan` | GET | Retrieve optimized rake plans |
-| `/api/analytics/cost` | GET | Get cost and utilization analytics |
+| `/api/dashboard/overview` | GET | Get system overview and metrics |
+| `/api/orders/` | GET/POST | Retrieve or add customer orders |
+| `/api/rake/` | GET/POST | Get or add rake information |
+| `/api/rake/optimize` | POST | Trigger AI optimization and get best rake plan |
+| `/api/inventory/stockyards` | GET | Retrieve stockyard inventory |
+| `/api/simulation/live` | GET | Get live simulation data |
+| `/api/ai/recommendations` | GET | Get AI-powered recommendations |
+| `/api/reports/summary` | GET | Generate summary reports |
+| `/ws/simulation` | WebSocket | Real-time simulation updates |
 
 ### 🔹 Data Flow
 1. Input data (materials, orders, rake info) → stored in DB.  
@@ -144,32 +222,55 @@ rake-optimization-system/
 
 ---
 
-## ⚛️ Frontend (React + Vite)
+## ⚛️ Frontend (React + TypeScript + Vite)
 
 ### 🔹 Tech Stack
-- React 18 + Vite  
-- Axios (API calls)  
-- Recharts (data visualization)  
-- TailwindCSS (UI design)
+- **React 18** with **TypeScript**  
+- **Vite** - Build tool & dev server  
+- **TailwindCSS** - UI styling  
+- **Shadcn/UI** - UI component library  
+- **Framer Motion** - Animations  
+- **Recharts** - Data visualization  
+- **WebSockets** - Real-time updates
 
 ### 🔹 Main Pages
 
 | Page | Description |
 |------|--------------|
-| **Home Page** | Overview, system intro |
-| **Dashboard** | Displays KPIs, total rakes, cost savings |
-| **Data Upload** | Upload CSV files for orders/materials |
-| **Rake Optimizer** | Trigger ML optimization and view results |
-| **Reports** | Cost trends, performance analytics |
+| **Dashboard** | Overview, KPIs, system metrics |
+| **Orders** | Manage customer orders |
+| **Inventory** | Stockyard inventory management |
+| **Rake Allocation** | Optimal rake assignment |
+| **Live Simulation** | Real-time rake movement visualization |
+| **Cost Optimization** | Cost analysis and optimization tools |
+| **AI Recommendations** | AI-powered insights |
 
-### 🔹 Example Component: Fetch & Display Plan
+### 🔹 Example Component: WebSocket Connection
 
-```javascript
+```typescript
+// Using WebSockets for real-time updates
+const { isConnected, messages, sendMessage } = useWebSocket();
+
+// Send command to backend
+if (isConnected) {
+  sendMessage({
+    action: "start_simulation",
+    speed: speed
+  });
+}
+
+// Handle incoming messages
 useEffect(() => {
-  axios.get("http://127.0.0.1:8000/api/rakes/plan")
-    .then(res => setPlans(res.data))
-    .catch(err => console.error(err));
-}, []);
+  if (messages && messages.length > 0) {
+    const data = typeof latestMessage === 'string' 
+      ? JSON.parse(latestMessage) 
+      : latestMessage;
+      
+    if (data.type === "simulation_update") {
+      setRoutes(data.rakes);
+    }
+  }
+}, [messages]);
 ```
 
 ---
@@ -206,8 +307,8 @@ Output → `rake_optimizer.pkl`
 ### 🔹 Step 1: Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/rake-optimization-system.git
-cd rake-optimization-system
+git clone https://github.com/Nehasasikumar/SAIL-SteelAuthorityOfIndiaLimited.git
+cd SAIL-SteelAuthorityOfIndiaLimited
 ```
 
 ### 🔹 Step 2: Setup Backend
@@ -217,10 +318,10 @@ cd backend
 python -m venv venv
 source venv/bin/activate      # (Windows: venv\Scripts\activate)
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Backend runs at: **[http://127.0.0.1:8000](http://127.0.0.1:8000)**
+Backend runs at: **[http://localhost:8000](http://localhost:8000)**
 
 ### 🔹 Step 3: Setup Frontend
 
@@ -232,30 +333,110 @@ npm run dev
 
 Frontend runs at: **[http://localhost:5173](http://localhost:5173)**
 
+### 🔹 Quick Start Script
+
+For Windows users, you can use the included batch file to start both servers:
+```bash
+start_dev.bat
+```
+
+## 🔧 Troubleshooting WebSocket Issues
+
+### Common WebSocket Error: "WebSocket error: Event" or "ECONNABORTED"
+
+#### 1. Check if both servers are running
+Ensure both uvicorn (backend) and Vite dev server (frontend) are running properly:
+```bash
+# Check backend
+curl http://localhost:8000/
+# Check frontend
+curl http://localhost:5173/
+```
+
+#### 2. Direct WebSocket Connection
+Try establishing a direct WebSocket connection by enabling the direct connection option:
+- Open `frontend/.env` 
+- Uncomment: `VITE_WS_BASE_URL=ws://localhost:8000/ws`
+- Restart frontend server
+
+#### 3. Backend Binding Address
+Ensure the backend binds to all network interfaces:
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+#### 4. Debug Logs
+For more detailed logging, run backend with debug level:
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --log-level debug
+```
+
+#### 5. Test WebSocket in Browser Console
+Test direct WebSocket connection via browser console:
+```javascript
+const ws = new WebSocket('ws://localhost:8000/ws/simulation');
+ws.onopen = () => console.log('Connected!');
+ws.onerror = (e) => console.log('Error:', e);
+```
+
 ---
 
 ## 🔗 End-to-End Flow
 
-1️⃣ **Plant Operator** uploads data → `/api/materials/upload`  
-2️⃣ **Stockyard Manager** uploads order data → `/api/orders/upload`  
-3️⃣ **Planner** runs optimization → `/api/optimize`  
-4️⃣ **Backend** calls ML model → generates `rake_plan.json`  
-5️⃣ **Frontend Dashboard** displays optimized plan visually  
-6️⃣ **Admin** reviews and exports daily dispatch report  
+1️⃣ **Plant Operator** updates inventory → `/api/inventory/stockyards`  
+2️⃣ **Stockyard Manager** submits orders → `/api/orders/`  
+3️⃣ **Logistics Planner** runs optimization → `/api/rake/optimize`  
+4️⃣ **Backend** calls ML model → optimizes rake allocation  
+5️⃣ **Live Simulation** visualizes rake movement via WebSockets  
+6️⃣ **Admin** reviews AI recommendations and cost analytics  
 
 ---
 
 ## 📊 Output Example
 
+### Rake Allocation API Response
+
 ```json
 {
-  "rake_id": "R001",
-  "loading_point": "Bokaro Y1",
+  "rake_id": "R1234",
+  "origin": "Bokaro",
   "destination": "CMO Kolkata",
-  "material": "Steel Coils",
+  "material_type": "Steel Coils",
   "wagons": 59,
-  "total_cost": 480000,
+  "estimated_cost": 480000,
+  "transit_progress": 45,
+  "status": "In Transit",
+  "departure_time": "08:30 AM",
+  "eta": "14:45 PM",
   "optimization_score": 0.93
+}
+```
+
+### WebSocket Simulation Update
+
+```json
+{
+  "type": "simulation_update",
+  "rakes": [
+    {
+      "id": "R1234",
+      "from": "Bokaro",
+      "to": "CMO Kolkata",
+      "progress": 48,
+      "status": "In Transit",
+      "departureTime": "08:30 AM",
+      "eta": "14:45 PM"
+    },
+    {
+      "id": "R5678",
+      "from": "Bokaro",
+      "to": "Customer A123",
+      "progress": 82,
+      "status": "In Transit",
+      "departureTime": "07:15 AM",
+      "eta": "12:30 PM"
+    }
+  ]
 }
 ```
 
