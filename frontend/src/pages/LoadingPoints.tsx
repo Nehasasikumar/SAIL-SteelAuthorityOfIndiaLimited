@@ -32,14 +32,14 @@ export default function LoadingPoints() {
   const loadingPoints: LoadingPoint[] = [
     {
       id: "LP-001",
-      name: "Bokaro Rail Siding-1",
+      name: "Bhilai Rail Siding-1",
       type: "rail",
-      location: "North Yard",
+      location: "Chhattisgarh",
       capacity: 5000,
       currentLoad: 4200,
       status: "operational",
       utilization: 84,
-      materials: ["HR Coils", "Plates"],
+      materials: ["Rails", "Plates"],
       constraints: {
         maxRakesPerDay: 12,
         sidingCapacity: 2,
@@ -53,12 +53,12 @@ export default function LoadingPoints() {
       id: "LP-002",
       name: "Bokaro Rail Siding-2",
       type: "rail",
-      location: "South Yard",
+      location: "Jharkhand",
       capacity: 3500,
       currentLoad: 2800,
       status: "operational",
       utilization: 80,
-      materials: ["CR Coils", "Sheets"],
+      materials: ["HR Coils", "CR Sheets"],
       constraints: {
         maxRakesPerDay: 8,
         sidingCapacity: 1,
@@ -70,14 +70,14 @@ export default function LoadingPoints() {
     },
     {
       id: "LP-003",
-      name: "Bokaro Road Terminal",
+      name: "Rourkela Road Terminal",
       type: "road",
-      location: "East Gate",
+      location: "Odisha",
       capacity: 2000,
       currentLoad: 1800,
       status: "operational",
       utilization: 90,
-      materials: ["Coal", "Iron Ore"],
+      materials: ["Plates", "HR Coils"],
       constraints: {
         maxRakesPerDay: 20,
         sidingCapacity: 0,
@@ -89,14 +89,14 @@ export default function LoadingPoints() {
     },
     {
       id: "LP-004",
-      name: "Bokaro Combined Terminal",
+      name: "Durgapur Combined Terminal",
       type: "both",
-      location: "West Yard",
+      location: "West Bengal",
       capacity: 8000,
       currentLoad: 7200,
       status: "overloaded",
       utilization: 90,
-      materials: ["All Types"],
+      materials: ["Rails", "Wheels", "Axles"],
       constraints: {
         maxRakesPerDay: 15,
         sidingCapacity: 3,
@@ -108,22 +108,22 @@ export default function LoadingPoints() {
     },
     {
       id: "LP-005",
-      name: "Bokaro Maintenance Bay",
+      name: "Visakhapatnam Port Terminal",
       type: "both",
-      location: "Central Depot",
-      capacity: 1000,
-      currentLoad: 0,
-      status: "maintenance",
-      utilization: 0,
-      materials: ["Maintenance Only"],
+      location: "Andhra Pradesh",
+      capacity: 10000,
+      currentLoad: 8500,
+      status: "operational",
+      utilization: 85,
+      materials: ["Export Cargo", "HR Coils", "Plates"],
       constraints: {
-        maxRakesPerDay: 0,
-        sidingCapacity: 1,
-        currentRakes: 0
+        maxRakesPerDay: 18,
+        sidingCapacity: 4,
+        currentRakes: 2
       },
-      efficiency: 0,
+      efficiency: 90,
       lastMaintenance: "2025-01-15",
-      nextMaintenance: "2025-01-16"
+      nextMaintenance: "2025-02-15"
     }
   ];
 

@@ -28,70 +28,70 @@ export default function Inventory() {
   const inventoryData: InventoryItem[] = [
     {
       id: "INV-001",
-      material: "HR Coils",
-      grade: "IS:2062",
-      stockyard: "Bokaro Main",
+      material: "Rails",
+      grade: "UIC 60",
+      stockyard: "Bhilai Steel Plant",
       quantity: 15420,
       unit: "tons",
       available: 12350,
       reserved: 3070,
-      location: "Yard-A1",
+      location: "Rail Yard",
       lastUpdated: "2025-01-15 14:30",
       quality: 'A',
       status: 'available'
     },
     {
       id: "INV-002",
-      material: "Coal",
-      grade: "Grade-A",
-      stockyard: "Bokaro Coal Yard",
+      material: "HR Coils",
+      grade: "IS:2062",
+      stockyard: "Bokaro Steel Plant",
       quantity: 25600,
       unit: "tons",
       available: 18900,
       reserved: 6700,
-      location: "Yard-C2",
+      location: "Coil Storage",
       lastUpdated: "2025-01-15 13:45",
       quality: 'A',
       status: 'available'
     },
     {
       id: "INV-003",
-      material: "Iron Ore",
-      grade: "Fe-62%",
-      stockyard: "Bokaro Ore Yard",
+      material: "Plates",
+      grade: "IS:2062",
+      stockyard: "Rourkela Steel Plant",
       quantity: 8750,
       unit: "tons",
       available: 8750,
       reserved: 0,
-      location: "Yard-O1",
+      location: "Plate Yard",
       lastUpdated: "2025-01-15 12:15",
       quality: 'B',
       status: 'available'
     },
     {
       id: "INV-004",
-      material: "CR Coils",
+      material: "CR Sheets",
       grade: "IS:513",
-      stockyard: "Bokaro Main",
+      stockyard: "Bokaro Steel Plant",
       quantity: 3200,
       unit: "tons",
       available: 1200,
       reserved: 2000,
-      location: "Yard-A2",
+      location: "Sheet Storage",
       lastUpdated: "2025-01-15 11:30",
       quality: 'A',
       status: 'low-stock'
     },
     {
       id: "INV-005",
-      material: "Limestone",
-      grade: "High Grade",
-      stockyard: "Bokaro Flux Yard",
+      material: "Stainless Steel",
+      grade: "SS 304",
+      stockyard: "Salem Steel Plant",
       quantity: 4500,
       unit: "tons",
       available: 4500,
       reserved: 0,
-      location: "Yard-F1",
+      location: "Special Steel Yard",
       lastUpdated: "2025-01-15 10:00",
       quality: 'B',
       status: 'critical'
@@ -235,11 +235,12 @@ export default function Inventory() {
             onChange={(e) => setSelectedStockyard(e.target.value)}
             className="px-3 py-2 border border-border rounded-lg bg-background"
           >
-            <option value="all">All Stockyards</option>
-            <option value="Bokaro Main">Bokaro Main</option>
-            <option value="Bokaro Coal Yard">Bokaro Coal Yard</option>
-            <option value="Bokaro Ore Yard">Bokaro Ore Yard</option>
-            <option value="Bokaro Flux Yard">Bokaro Flux Yard</option>
+            <option value="all">All Plants</option>
+            <option value="Bhilai Steel Plant">Bhilai Steel Plant</option>
+            <option value="Bokaro Steel Plant">Bokaro Steel Plant</option>
+            <option value="Rourkela Steel Plant">Rourkela Steel Plant</option>
+            <option value="Durgapur Steel Plant">Durgapur Steel Plant</option>
+            <option value="Salem Steel Plant">Salem Steel Plant</option>
           </select>
         </div>
 

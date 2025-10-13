@@ -15,13 +15,13 @@ interface RakeStatus {
 }
 
 export default function RakeAllocation() {
-  // Mock data for rake statuses
+  // SAIL-specific rake data
   const rakeData: RakeStatus[] = [
     {
       id: "R1234",
       available: false,
-      currentLocation: "Bokaro Yard",
-      destination: "CMO Kolkata",
+      currentLocation: "Bhilai Steel Plant",
+      destination: "Visakhapatnam Port",
       returnTime: "16:30",
       estimatedReturn: "Available for loading in 2 hours",
       status: "in-transit",
@@ -30,15 +30,15 @@ export default function RakeAllocation() {
     {
       id: "R5678",
       available: true,
-      currentLocation: "Bokaro Yard",
+      currentLocation: "Bokaro Steel Plant",
       status: "available",
       lastUpdated: "15:00"
     },
     {
       id: "R9012",
       available: false,
-      currentLocation: "Loading Point A1",
-      destination: "Customer Site Mumbai",
+      currentLocation: "Rourkela Loading Point",
+      destination: "Paradip Port",
       returnTime: "18:45",
       estimatedReturn: "Available for loading in 4 hours",
       status: "loading",
@@ -47,8 +47,8 @@ export default function RakeAllocation() {
     {
       id: "R3456",
       available: false,
-      currentLocation: "CMO Delhi",
-      destination: "Bokaro Yard",
+      currentLocation: "Haldia Port",
+      destination: "Durgapur Steel Plant",
       returnTime: "17:15",
       estimatedReturn: "Available for loading in 1.5 hours",
       status: "unloading",
@@ -57,14 +57,14 @@ export default function RakeAllocation() {
     {
       id: "R7890",
       available: true,
-      currentLocation: "Bokaro Yard",
+      currentLocation: "Durgapur Steel Plant",
       status: "available",
       lastUpdated: "15:30"
     },
     {
       id: "R2468",
       available: false,
-      currentLocation: "Maintenance Shed",
+      currentLocation: "Maintenance Facility",
       returnTime: "20:00",
       estimatedReturn: "Available for loading in 6 hours",
       status: "maintenance",

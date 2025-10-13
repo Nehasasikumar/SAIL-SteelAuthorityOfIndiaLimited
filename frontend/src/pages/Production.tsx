@@ -30,8 +30,8 @@ export default function Production() {
   const productionPlans: ProductionPlan[] = [
     {
       id: "PP-001",
-      material: "HR Coils",
-      grade: "IS:2062",
+      material: "Rails",
+      grade: "UIC 60",
       plannedQuantity: 15000,
       currentProduction: 12800,
       railOrders: 12000,
@@ -47,8 +47,8 @@ export default function Production() {
     },
     {
       id: "PP-002",
-      material: "CR Coils",
-      grade: "IS:513",
+      material: "HR Coils",
+      grade: "IS:2062",
       plannedQuantity: 8000,
       currentProduction: 5600,
       railOrders: 2000,
@@ -81,8 +81,8 @@ export default function Production() {
     },
     {
       id: "PP-004",
-      material: "Sheets",
-      grade: "IS:1079",
+      material: "CR Sheets",
+      grade: "IS:513",
       plannedQuantity: 6000,
       currentProduction: 3600,
       railOrders: 1000,
@@ -98,8 +98,8 @@ export default function Production() {
     },
     {
       id: "PP-005",
-      material: "Coils",
-      grade: "IS:11587",
+      material: "Stainless Steel",
+      grade: "SS 304",
       plannedQuantity: 10000,
       currentProduction: 7500,
       railOrders: 7000,

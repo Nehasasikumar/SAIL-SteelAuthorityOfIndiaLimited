@@ -1,33 +1,41 @@
 import { motion } from "framer-motion";
-import { Train, TrendingUp, Clock, Fuel, BarChart3, Activity, Download } from "lucide-react";
+import { Train, TrendingUp, Clock, Fuel, BarChart3, Activity, Download, Factory } from "lucide-react";
 import MetricCard from "@/components/MetricCard";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 
 const utilizationData = [
-  { month: "Jan", utilization: 78 },
-  { month: "Feb", utilization: 82 },
-  { month: "Mar", utilization: 85 },
-  { month: "Apr", utilization: 79 },
-  { month: "May", utilization: 88 },
-  { month: "Jun", utilization: 92 },
+  { month: "Jan", utilization: 78, bhilai: 85, bokaro: 82, rourkela: 75 },
+  { month: "Feb", utilization: 82, bhilai: 88, bokaro: 85, rourkela: 79 },
+  { month: "Mar", utilization: 85, bhilai: 90, bokaro: 88, rourkela: 82 },
+  { month: "Apr", utilization: 79, bhilai: 85, bokaro: 82, rourkela: 76 },
+  { month: "May", utilization: 88, bhilai: 92, bokaro: 90, rourkela: 85 },
+  { month: "Jun", utilization: 92, bhilai: 95, bokaro: 94, rourkela: 88 },
 ];
 
 const dispatchData = [
-  { day: "Mon", volume: 245 },
-  { day: "Tue", volume: 312 },
-  { day: "Wed", volume: 289 },
-  { day: "Thu", volume: 356 },
-  { day: "Fri", volume: 401 },
-  { day: "Sat", volume: 298 },
-  { day: "Sun", volume: 267 },
+  { day: "Mon", volume: 245, rails: 85, coils: 120, plates: 40 },
+  { day: "Tue", volume: 312, rails: 95, coils: 160, plates: 57 },
+  { day: "Wed", volume: 289, rails: 80, coils: 145, plates: 64 },
+  { day: "Thu", volume: 356, rails: 110, coils: 180, plates: 66 },
+  { day: "Fri", volume: 401, rails: 125, coils: 200, plates: 76 },
+  { day: "Sat", volume: 298, rails: 90, coils: 150, plates: 58 },
+  { day: "Sun", volume: 267, rails: 75, coils: 135, plates: 57 },
 ];
 
 const priorityData = [
-  { name: "High Priority", value: 35, color: "#f97316" },
-  { name: "Medium Priority", value: 45, color: "#3b82f6" },
-  { name: "Low Priority", value: 20, color: "#10b981" },
+  { name: "Rail Orders", value: 40, color: "#3b82f6" },
+  { name: "Export Orders", value: 35, color: "#10b981" },
+  { name: "Domestic Orders", value: 25, color: "#f97316" },
+];
+
+const plantProduction = [
+  { plant: "Bhilai", capacity: 7.5, current: 6.8, efficiency: 91 },
+  { plant: "Bokaro", capacity: 5.8, current: 5.2, efficiency: 90 },
+  { plant: "Rourkela", capacity: 4.5, current: 4.1, efficiency: 91 },
+  { plant: "Durgapur", capacity: 2.2, current: 1.9, efficiency: 86 },
+  { plant: "IISCO", capacity: 2.5, current: 2.2, efficiency: 88 },
 ];
 
 export default function Dashboard() {
@@ -179,13 +187,54 @@ export default function Dashboard() {
         </motion.div>
       </div>
 
+      {/* Plant Production Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+      >
+        <Card className="p-6 shadow-elevated bg-transparent backdrop-blur-sm border-border/50">
+          <div className="flex items-center gap-2 mb-6">
+            <Factory className="h-5 w-5 text-primary" />
+            <h3 className="text-lg font-semibold">SAIL Plant Production Overview</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            {plantProduction.map((plant, index) => (
+              <motion.div
+                key={plant.plant}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 + index * 0.1 }}
+                className="p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"
+              >
+                <h4 className="font-bold text-lg mb-2">{plant.plant}</h4>
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Capacity</span>
+                    <span className="font-medium">{plant.capacity} MT</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Current</span>
+                    <span className="font-medium">{plant.current} MT</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Efficiency</span>
+                    <span className="font-medium text-green-600">{plant.efficiency}%</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </Card>
+      </motion.div>
+
       {/* Bottom Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Priority Distribution */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.8 }}
           className="lg:col-span-1"
         >
           <Card className="p-6 shadow-elevated bg-transparent backdrop-blur-sm border-border/50">
@@ -216,23 +265,23 @@ export default function Dashboard() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
+          transition={{ delay: 0.9 }}
           className="lg:col-span-2"
         >
           <Card className="p-6 shadow-elevated bg-transparent backdrop-blur-sm border-border/50">
             <h3 className="text-lg font-semibold mb-4">Recent Activity</h3>
             <div className="space-y-3">
               {[
-                { rake: "R1234", status: "Departed", time: "10:45 AM", destination: "CMO Kolkata" },
-                { rake: "R5678", status: "Loading", time: "11:20 AM", destination: "Customer A123" },
-                { rake: "R9012", status: "Arrived", time: "12:05 PM", destination: "CMO Mumbai" },
-                { rake: "R3456", status: "In Transit", time: "12:30 PM", destination: "Customer B456" },
+                { rake: "R1234", status: "Departed", time: "10:45 AM", destination: "CMO Kolkata", product: "Rails" },
+                { rake: "R5678", status: "Loading", time: "11:20 AM", destination: "Visakhapatnam Port", product: "HR Coils" },
+                { rake: "R9012", status: "Arrived", time: "12:05 PM", destination: "CMO Mumbai", product: "Plates" },
+                { rake: "R3456", status: "In Transit", time: "12:30 PM", destination: "Paradip Port", product: "CR Sheets" },
               ].map((activity, index) => (
                 <motion.div
                   key={activity.rake}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.8 + index * 0.1 }}
+                  transition={{ delay: 1.0 + index * 0.1 }}
                   className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-muted/50 transition-colors"
                 >
                   <div className="flex items-center gap-3">
