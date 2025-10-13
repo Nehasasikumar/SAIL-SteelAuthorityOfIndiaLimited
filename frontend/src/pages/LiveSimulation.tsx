@@ -89,18 +89,21 @@ export default function LiveSimulation() {
       const latestMessage = messages[messages.length - 1];
 
       try {
-        // Process message data
-        if (latestMessage && typeof latestMessage === "string") {
-          const data = JSON.parse(latestMessage);
+        // Messages may be objects or JSON strings depending on the socket implementation
+        const data =
+          typeof latestMessage === "string"
+            ? JSON.parse(latestMessage)
+            : latestMessage;
 
-          if (data.type === "simulation_update" && Array.isArray(data.rakes)) {
-            setRoutes(data.rakes);
-          } else if (data.type === "simulation_error") {
-            setError(data.message || "Simulation error occurred");
-          } else if (data.type === "simulation_status") {
-            setIsPlaying(data.is_running || false);
-            setSpeed(data.speed || 1);
-          }
+        if (!data || typeof data !== "object") return;
+
+        if (data.type === "simulation_update" && Array.isArray(data.rakes)) {
+          setRoutes(data.rakes);
+        } else if (data.type === "simulation_error") {
+          setError(data.message || "Simulation error occurred");
+        } else if (data.type === "simulation_status") {
+          setIsPlaying(Boolean(data.is_running));
+          setSpeed(data.speed || 1);
         }
       } catch (err) {
         console.error("Error processing WebSocket message:", err);
@@ -109,10 +112,12 @@ export default function LiveSimulation() {
   }, [messages]);
 
   return (
-    <div className="space-y-6 animate-fade-in-up" style={{ position: 'relative', zIndex: 1 }}>
+    <div
+      className="space-y-6 animate-fade-in-up"
+      style={{ position: "relative", zIndex: 1 }}
+    >
       {/* Controls */}
       <div className="flex items-center justify-end">
-
         {error && (
           <Alert variant="destructive" className="mb-4">
             <AlertCircle className="h-4 w-4" />
@@ -127,14 +132,12 @@ export default function LiveSimulation() {
               const newState = !isPlaying;
               setIsPlaying(newState);
 
-              // Send command to backend via WebSocket
+              // Send command to backend via WebSocket (send object, not pre-stringified)
               if (isConnected) {
-                sendMessage(
-                  JSON.stringify({
-                    action: newState ? "start_simulation" : "pause_simulation",
-                    speed: speed,
-                  })
-                );
+                sendMessage({
+                  action: newState ? "start_simulation" : "pause_simulation",
+                  speed: speed,
+                });
               } else {
                 setError("WebSocket not connected. Cannot control simulation.");
               }
@@ -157,12 +160,10 @@ export default function LiveSimulation() {
 
               // Update simulation speed on backend
               if (isConnected && isPlaying) {
-                sendMessage(
-                  JSON.stringify({
-                    action: "set_speed",
-                    speed: newSpeed,
-                  })
-                );
+                sendMessage({
+                  action: "set_speed",
+                  speed: newSpeed,
+                });
               }
             }}
             disabled={!isConnected}
