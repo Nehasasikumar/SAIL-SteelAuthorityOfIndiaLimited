@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { Train, MapPin, Clock, CheckCircle, XCircle, AlertCircle, Package } from "lucide-react";
+import { Train, MapPin, Clock, CheckCircle, XCircle, AlertCircle, Package, UserCheck } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 interface RakeStatus {
   id: string;
@@ -15,7 +16,17 @@ interface RakeStatus {
   lastUpdated: string;
 }
 
+interface AllocationResult {
+  allocatedRake: RakeStatus | null;
+  allocationTime: string;
+  estimatedLoadingTime: string;
+  destination: string;
+}
+
 export default function RakeAllocation() {
+  const [allocatedRakes, setAllocatedRakes] = useState<AllocationResult[]>([]);
+  const [showAllocationResult, setShowAllocationResult] = useState(false);
+
   // SAIL-specific rake data
   const rakeData: RakeStatus[] = [
     {
@@ -106,6 +117,53 @@ export default function RakeAllocation() {
     }
   };
 
+  // Mock destinations for allocation
+  const mockDestinations = [
+    "Visakhapatnam Port",
+    "Paradip Port",
+    "Haldia Port",
+    "Mumbai Port",
+    "Chennai Port",
+    "Kolkata Port"
+  ];
+
+  const handleAllocateRake = () => {
+    // Find available rakes
+    const availableRakes = rakeData.filter(rake => rake.available);
+
+    if (availableRakes.length === 0) {
+      alert("No rakes are currently available for allocation!");
+      return;
+    }
+
+    // Randomly select an available rake
+    const randomIndex = Math.floor(Math.random() * availableRakes.length);
+    const selectedRake = availableRakes[randomIndex];
+
+    // Generate mock allocation data
+    const currentTime = new Date().toLocaleTimeString();
+    const estimatedLoadingTime = new Date(Date.now() + 2 * 60 * 60 * 1000).toLocaleTimeString(); // 2 hours from now
+    const randomDestination = mockDestinations[Math.floor(Math.random() * mockDestinations.length)];
+
+    const newAllocation: AllocationResult = {
+      allocatedRake: selectedRake,
+      allocationTime: currentTime,
+      estimatedLoadingTime,
+      destination: randomDestination
+    };
+
+    // Add to allocation history
+    setAllocatedRakes(prev => [newAllocation, ...prev]);
+    setShowAllocationResult(true);
+
+    // Auto-hide the result after 5 seconds
+    setTimeout(() => {
+      setShowAllocationResult(false);
+    }, 5000);
+
+    console.log("Rake allocated:", newAllocation);
+  };
+
   return (
     <div className="space-y-6 animate-fade-in-up" style={{ position: 'relative', zIndex: 1 }}>
       {/* Header with Allocate Rake Button in right corner */}
@@ -121,16 +179,103 @@ export default function RakeAllocation() {
           </Badge>
           <Button
             className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg font-semibold shadow-lg"
-            onClick={() => {
-              // Handle rake allocation logic
-              console.log("Allocate Rake button clicked");
-              // You can add custom logic here for manual rake allocation
-            }}
+            onClick={handleAllocateRake}
           >
-             Allocate Rake
+            <UserCheck className="h-5 w-5 mr-2" />
+            Allocate Rake
           </Button>
         </div>
       </div>
+
+      {/* Allocation Result Notification */}
+      {showAllocationResult && allocatedRakes.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="mb-6"
+        >
+          <Card className="p-6 bg-green-500/10 border-green-500/20 backdrop-blur-sm">
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0">
+                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                  <UserCheck className="h-6 w-6 text-white" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-green-700 mb-2">
+                  Rake Successfully Allocated!
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Rake ID:</span>
+                    <p className="font-semibold text-green-600">
+                      {allocatedRakes[0].allocatedRake?.id}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Current Location:</span>
+                    <p className="font-semibold">
+                      {allocatedRakes[0].allocatedRake?.currentLocation}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Destination:</span>
+                    <p className="font-semibold text-blue-600">
+                      {allocatedRakes[0].destination}
+                    </p>
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Est. Loading Time:</span>
+                    <p className="font-semibold text-orange-600">
+                      {allocatedRakes[0].estimatedLoadingTime}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-3 text-xs text-muted-foreground">
+                  Allocated at: {allocatedRakes[0].allocationTime}
+                </div>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+      )}
+
+      {/* Allocation History */}
+      {allocatedRakes.length > 0 && (
+        <Card className="mb-6 bg-transparent backdrop-blur-sm border-border/50">
+          <div className="p-4 border-b border-border">
+            <h3 className="text-lg font-semibold">Recent Allocations</h3>
+            <p className="text-sm text-muted-foreground">
+              History of manually allocated rakes
+            </p>
+          </div>
+          <div className="p-4">
+            <div className="space-y-3">
+              {allocatedRakes.slice(0, 5).map((allocation, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-3 bg-muted/30 rounded-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <Train className="h-4 w-4 text-primary" />
+                    <div>
+                      <p className="font-semibold">{allocation.allocatedRake?.id}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {allocation.allocatedRake?.currentLocation} → {allocation.destination}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right text-sm">
+                    <p className="font-medium">{allocation.allocationTime}</p>
+                    <p className="text-muted-foreground">Est. {allocation.estimatedLoadingTime}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Card>
+      )}
 
       {/* Rake Status Table */}
       <Card className="bg-transparent backdrop-blur-sm border-border/50">
