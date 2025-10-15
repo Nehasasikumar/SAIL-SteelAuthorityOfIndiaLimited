@@ -14,11 +14,12 @@ export default defineConfig(() => ({
         changeOrigin: true,
         secure: false,
       },
-      // Proxy WebSocket connections
+      // Proxy WebSocket connections - disable changeOrigin to avoid header rewriting issues
       "/ws": {
         target: "ws://localhost:8000",
         ws: true,
-        changeOrigin: true,
+        changeOrigin: false, // Don't rewrite Origin/Host headers
+        rewrite: (path) => path, // Don't modify the path
         secure: false,
       },
     },

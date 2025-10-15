@@ -17,7 +17,8 @@ export function useWebSocket() {
   // Use refs for values that shouldn't trigger re-renders
   const wsConnectionRef = useRef(createWebSocketConnection());
   const messageHandlersRef = useRef<MessageHandlerMap>({});
-  const pingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // In browser environments setInterval returns a number; keep it broad to avoid TS mismatches
+  const pingIntervalRef = useRef<number | null>(null);
   
   // Connect to the WebSocket
   const connect = useCallback(() => {
@@ -36,9 +37,25 @@ export function useWebSocket() {
         
         // Start sending regular pings to keep the connection alive
         if (pingIntervalRef.current) {
-          clearInterval(pingIntervalRef.current);
+          window.clearInterval(pingIntervalRef.current);
         }
-        pingIntervalRef.current = wsConnection.startPingInterval(30000);
+        // startPingInterval returns a function to clear the interval in our implementation,
+        // but the hook stores numeric IDs; adapt accordingly: call startPingInterval and keep
+        // the returned cleanup wrapper as a number by creating a real setInterval here.
+        // However, the API already returns a clear function; to preserve behavior, we'll
+        // call startPingInterval and ignore its return (it also sets an interval internally).
+        // For simplicity, we create our own ping interval here to manage the ID.
+        pingIntervalRef.current = window.setInterval(() => {
+          // ping via underlying connection if open
+          try {
+            const socket = wsConnection.socket;
+            if (socket && socket.readyState === WebSocket.OPEN) {
+              socket.send(JSON.stringify({ type: 'ping' }));
+            }
+          } catch (e) {
+            // ignore send errors here
+          }
+        }, 30000);
         
         // Request initial positions
         wsConnection.requestPositions();
@@ -48,7 +65,7 @@ export function useWebSocket() {
         setIsConnected(false);
         setConnectionStatus('disconnected');
         if (pingIntervalRef.current) {
-          clearInterval(pingIntervalRef.current);
+          window.clearInterval(pingIntervalRef.current);
           pingIntervalRef.current = null;
         }
       }
@@ -83,7 +100,7 @@ export function useWebSocket() {
     setIsConnected(false);
     setConnectionStatus('disconnected');
     if (pingIntervalRef.current) {
-      clearInterval(pingIntervalRef.current);
+      window.clearInterval(pingIntervalRef.current);
       pingIntervalRef.current = null;
     }
   }, []);
@@ -93,13 +110,32 @@ export function useWebSocket() {
     return wsConnectionRef.current.on(type, handler);
   }, []);
   
-  // Send a message through WebSocket
-  const send = useCallback((type: string, data: any = {}) => {
-    const success = wsConnectionRef.current.send(type, data);
-    if (!success && isConnected) {
-      setError(new Error('Failed to send message'));
+  // Send a message through WebSocket.
+  // Supports two forms:
+  //  - send(type: string, data: object) -> sends { type, ...data, timestamp }
+  //  - send(payload: object | string) -> sends the raw payload as JSON (useful when backend expects custom shape)
+  const send = useCallback((typeOrPayload: string | object, data?: any) => {
+    try {
+      // If caller provided two args, treat as (type, data)
+      if (typeof typeOrPayload === 'string' && data !== undefined) {
+        const success = wsConnectionRef.current.send(typeOrPayload, data);
+        if (!success && isConnected) setError(new Error('Failed to send message'));
+        return success;
+      }
+
+      // Otherwise send raw payload (object or JSON string)
+      const payload = typeof typeOrPayload === 'string' ? JSON.parse(typeOrPayload) : typeOrPayload;
+      const socket = wsConnectionRef.current.socket;
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(payload));
+        return true;
+      }
+      if (isConnected) setError(new Error('Failed to send raw payload: socket not open'));
+      return false;
+    } catch (err) {
+      setError(err as Error);
+      return false;
     }
-    return success;
   }, [isConnected]);
   
   // Request current positions

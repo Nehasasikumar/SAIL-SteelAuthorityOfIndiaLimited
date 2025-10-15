@@ -35,19 +35,28 @@ async def get_custom_report_data(
     report_type: str = Query(..., description="Type of report to generate"),
     date_from: Optional[date] = Query(None, description="Start date for the report"),
     date_to: Optional[date] = Query(None, description="End date for the report"),
-    filters: Optional[Dict[str, Any]] = Query(None, description="Additional filters for the report"),
+    filters: Optional[str] = Query(None, description="Additional filters for the report as JSON string"),
     db: Session = Depends(get_db)
 ):
     """
     Generate a custom report based on provided parameters
     """
     try:
+        # Convert filters string to dict if provided
+        filter_dict = {}
+        if filters:
+            import json
+            try:
+                filter_dict = json.loads(filters)
+            except json.JSONDecodeError:
+                raise HTTPException(status_code=400, detail="Invalid JSON in filters parameter")
+        
         report = get_custom_report(
             db, 
             report_type=report_type,
             date_from=date_from,
             date_to=date_to,
-            filters=filters
+            filters=filter_dict
         )
         return report
     except Exception as e:
