@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Train, MapPin, Clock, CheckCircle, XCircle, AlertCircle, Package } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 interface RakeStatus {
   id: string;
@@ -107,15 +108,28 @@ export default function RakeAllocation() {
 
   return (
     <div className="space-y-6 animate-fade-in-up" style={{ position: 'relative', zIndex: 1 }}>
-      {/* Header */}
+      {/* Header with Allocate Rake Button in right corner */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold">Rake Status Dashboard</h2>
           <p className="text-muted-foreground mt-1">Real-time status of all rakes and their availability</p>
         </div>
-        <Badge variant="outline" className="text-sm">
-          Last updated: {new Date().toLocaleTimeString()}
-        </Badge>
+
+        <div className="flex items-center gap-4">
+          <Badge variant="outline" className="text-sm">
+            Last updated: {new Date().toLocaleTimeString()}
+          </Badge>
+          <Button
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg font-semibold shadow-lg"
+            onClick={() => {
+              // Handle rake allocation logic
+              console.log("Allocate Rake button clicked");
+              // You can add custom logic here for manual rake allocation
+            }}
+          >
+             Allocate Rake
+          </Button>
+        </div>
       </div>
 
       {/* Rake Status Table */}
